@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Get in Touch | Teach Talks</title>
+    <meta name="description" content="Get in touch with the Teach Talks team. We'd love to hear from you and answer any questions about our educational resources.">
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="images/logo.jpg" alt="Teach Talks Logo" class="logo-image">
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="resources.html" class="nav-link">Resources</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="contact.html" class="nav-link active">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Header -->
+    <section class="blog-header">
+        <div class="container">
+            <h1 class="page-title">Contact Us</h1>
+            <p class="page-subtitle">We'd love to hear from you! Get in touch with any questions, suggestions, or feedback about our educational resources.</p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="contact-content">
+        <div class="container">
+            <div class="contact-layout">
+                <!-- Contact Form -->
+                <div class="contact-form-section">
+                    <h2>Send us a Message</h2>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="resources">Resource Request</option>
+                                <option value="collaboration">Collaboration</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="organization">School/Organization</label>
+                            <input type="text" id="organization" name="organization">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
+                        </div>
+                        
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <span class="checkmark"></span>
+                                Subscribe to our newsletter for the latest educational resources and updates
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="contact-info-section">
+                    <h2>Get in Touch</h2>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>hello@teachtalks.co.uk</p>
+                            <small>We typically respond within 24 hours</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <p>+44 20 7123 4567</p>
+                            <small>Monday - Friday: 9:00 AM - 5:00 PM GMT</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Address</h4>
+                            <p>123 Education Street<br>London, EC1A 1BB<br>United Kingdom</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Office Hours</h4>
+                            <p>Monday - Friday: 9:00 AM - 5:00 PM GMT<br>
+                            Saturday: 10:00 AM - 2:00 PM GMT<br>
+                            Sunday: Closed</p>
+                        </div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="social-contact">
+                        <h4>Follow Us</h4>
+                        <div class="social-links-large">
+                            <a href="#" class="social-link">
+                                <i class="fab fa-facebook"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>How can I download resources?</h4>
+                    <p>All our resources are free to download. Simply visit our Resources page, find the material you need, and click the download button.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Can I submit my own teaching resources?</h4>
+                    <p>Yes! We welcome submissions from educators. Please contact us with your resource ideas and we'll guide you through the submission process.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Do you offer professional development workshops?</h4>
+                    <p>We offer both online and in-person professional development sessions. Contact us to discuss your specific needs and requirements.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>How often do you publish new content?</h4>
+                    <p>We publish new blog articles weekly and add new resources monthly. Subscribe to our newsletter to stay updated with the latest content.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="images/logo.jpg" alt="Teach Talks Logo" class="footer-logo-image">
+                    </div>
+                    <p>Empowering educators with innovative teaching methods and educational resources.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Teaching Methods</a></li>
+                        <li><a href="#">Technology</a></li>
+                        <li><a href="#">Professional Development</a></li>
+                        <li><a href="#">Classroom Management</a></li>
+                        <li><a href="#">Educational Research</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@teachtalks.co.uk</li>
+                        <li><i class="fas fa-phone"></i> +44 20 7123 4567</li>
+                        <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> London, United Kingdom</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Teach Talks. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/contact.js"></script>
+</body>
+</html> 
