@@ -37,33 +37,161 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Newsletter form submission
-    const newsletterForm = document.querySelector('.newsletter-form');
+    // Enhanced Newsletter form submission with validation
+    const newsletterForm = document.querySelector('#newsletterForm');
     if (newsletterForm) {
+        const emailInput = newsletterForm.querySelector('#newsletter-email');
+        const submitButton = newsletterForm.querySelector('.newsletter-btn');
+        const errorMessage = newsletterForm.querySelector('#email-error');
+        const btnText = submitButton.querySelector('.btn-text');
+        const btnLoading = submitButton.querySelector('.btn-loading');
+        const btnSuccess = submitButton.querySelector('.btn-success');
+
+        // Email validation function
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Show validation message
+        function showValidationMessage(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            emailInput.setAttribute('aria-invalid', 'true');
+            emailInput.setAttribute('aria-describedby', 'email-error');
+        }
+
+        // Hide validation message
+        function hideValidationMessage() {
+            errorMessage.classList.remove('show');
+            emailInput.setAttribute('aria-invalid', 'false');
+            emailInput.removeAttribute('aria-describedby');
+        }
+
+        // Real-time validation
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            
+            if (email === '') {
+                hideValidationMessage();
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showValidationMessage('Please enter a valid email address');
+            } else {
+                hideValidationMessage();
+            }
+        });
+
+        // Enhanced form submission
         newsletterForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
             
-            if (email) {
-                // Simulate form submission
-                const button = this.querySelector('button');
-                const originalText = button.textContent;
-                
-                button.textContent = 'Subscribing...';
-                button.disabled = true;
-                
-                setTimeout(() => {
-                    button.textContent = 'Subscribed!';
-                    button.style.background = 'var(--success)';
-                    this.querySelector('input[type="email"]').value = '';
-                    
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.disabled = false;
-                        button.style.background = '';
-                    }, 2000);
-                }, 1500);
+            const email = emailInput.value.trim();
+            
+            // Validation
+            if (!email) {
+                showValidationMessage('Email address is required');
+                emailInput.focus();
+                return;
             }
+            
+            if (!validateEmail(email)) {
+                showValidationMessage('Please enter a valid email address');
+                emailInput.focus();
+                return;
+            }
+
+            // Hide any existing validation messages
+            hideValidationMessage();
+            
+            // Disable form and show loading state
+            submitButton.disabled = true;
+            emailInput.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-flex';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Show success state
+                btnLoading.style.display = 'none';
+                btnSuccess.style.display = 'inline-flex';
+                
+                // Add success animation to form
+                newsletterForm.style.transform = 'scale(1.02)';
+                newsletterForm.style.transition = 'transform 0.3s ease';
+                
+                // Reset form after delay
+                setTimeout(() => {
+                    // Reset button states
+                    btnSuccess.style.display = 'none';
+                    btnText.style.display = 'inline';
+                    submitButton.disabled = false;
+                    emailInput.disabled = false;
+                    
+                    // Clear form
+                    emailInput.value = '';
+                    
+                    // Reset form animation
+                    newsletterForm.style.transform = '';
+                    
+                    // Show thank you message
+                    const thankYouMessage = document.createElement('div');
+                    thankYouMessage.className = 'thank-you-message';
+                    thankYouMessage.innerHTML = `
+                        <div style="
+                            background: rgba(81, 207, 102, 0.1);
+                            color: #51cf66;
+                            padding: 15px 20px;
+                            border-radius: 8px;
+                            margin-top: 15px;
+                            text-align: center;
+                            font-weight: 600;
+                            animation: fadeInUp 0.5s ease-out;
+                        ">
+                            <i class="fas fa-check-circle"></i>
+                            Welcome aboard! Check your email for a confirmation.
+                        </div>
+                    `;
+                    
+                    newsletterForm.parentNode.appendChild(thankYouMessage);
+                    
+                    // Remove thank you message after 5 seconds
+                    setTimeout(() => {
+                        if (thankYouMessage.parentNode) {
+                            thankYouMessage.remove();
+                        }
+                    }, 5000);
+                    
+                }, 2000);
+            }, 1500);
+        });
+
+        // Add focus enhancement
+        emailInput.addEventListener('focus', function() {
+            this.parentNode.parentNode.style.transform = 'scale(1.02)';
+        });
+
+        emailInput.addEventListener('blur', function() {
+            this.parentNode.parentNode.style.transform = '';
+        });
+    }
+
+    // Newsletter preview functionality
+    const newsletterPreview = document.querySelector('.newsletter-preview .preview-content');
+    if (newsletterPreview) {
+        newsletterPreview.addEventListener('click', function() {
+            // Add click animation
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // In a real implementation, you would open a modal or redirect
+            setTimeout(() => {
+                alert('Newsletter preview would open here. This is a demo implementation.');
+            }, 200);
         });
     }
 
@@ -94,9 +222,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
 
     // Observe elements for animation
-    const animateElements = document.querySelectorAll('.feature-card, .article-card');
-    animateElements.forEach(el => {
-        observer.observe(el);
+    const animateElements = document.querySelectorAll('.feature-card, .article-card, .benefit-item');
+    animateElements.forEach(el => observer.observe(el));
+
+    // Add keyboard navigation for newsletter benefits
+    const benefitItems = document.querySelectorAll('.benefit-item');
+    benefitItems.forEach((item, index) => {
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', `Benefit ${index + 1}: ${item.querySelector('h4').textContent}`);
+        
+        item.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                // Add focus animation
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            }
+        });
+    });
+
+    // Add hover effects for social proof avatars
+    const avatars = document.querySelectorAll('.avatar');
+    avatars.forEach((avatar, index) => {
+        avatar.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1) translateY(-2px)';
+            this.style.zIndex = '10';
+        });
+        
+        avatar.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+            this.style.zIndex = '';
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
     });
 
     // Add scroll-triggered animations
@@ -253,6 +426,57 @@ document.addEventListener('DOMContentLoaded', function() {
     // Console welcome message
     console.log('%c Welcome to Teach Talks! 🎓', 'color: #2E8B57; font-size: 16px; font-weight: bold;');
     console.log('%c Educational excellence through innovative teaching methods', 'color: #663399; font-size: 12px;');
+
+    // Enhanced search and filtering functionality
+    // Quick search functionality for homepage
+    const quickSearch = document.querySelector('.quick-search');
+    if (quickSearch) {
+        quickSearch.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    // Redirect to blog with search parameter
+                    window.location.href = `blog.html?search=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+        const searchBtn = document.querySelector('.search-btn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', function() {
+                const query = quickSearch.value.trim();
+                if (query) {
+                    window.location.href = `blog.html?search=${encodeURIComponent(query)}`;
+                }
+            });
+        }
+    }
+
+    // Blog page filtering
+    if (window.location.pathname.includes('blog.html')) {
+        initializeBlogFiltering();
+    }
+
+    // Resources page filtering
+    if (window.location.pathname.includes('resources.html')) {
+        initializeResourcesFiltering();
+    }
+
+    // Load more functionality
+    const loadMoreBtn = document.querySelector('.load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            // Simulate loading more content
+            this.textContent = 'Loading...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.textContent = 'Load More Success Stories';
+                this.disabled = false;
+                // In a real implementation, you would load actual content here
+            }, 1500);
+        });
+    }
 });
 
 // Add CSS for additional animations and effects
@@ -335,7 +559,7 @@ const additionalStyles = `
         .nav-menu {
             position: fixed;
             left: -100%;
-            top: 70px;
+            top: 100px;
             flex-direction: column;
             background-color: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
@@ -377,4 +601,194 @@ const additionalStyles = `
 // Inject additional styles
 const styleSheet = document.createElement('style');
 styleSheet.textContent = additionalStyles;
-document.head.appendChild(styleSheet); 
+document.head.appendChild(styleSheet);
+
+// Blog filtering functionality
+function initializeBlogFiltering() {
+    const gradeFilter = document.getElementById('grade-filter');
+    const formatFilter = document.getElementById('format-filter');
+    const subjectFilter = document.getElementById('subject-filter');
+    const searchInput = document.querySelector('.search-input');
+    const categoryFilters = document.querySelectorAll('.category-filter');
+
+    // Filter articles based on current selections
+    function filterArticles() {
+        const articles = document.querySelectorAll('.article-card');
+        const selectedGrade = gradeFilter ? gradeFilter.value : '';
+        const selectedFormat = formatFilter ? formatFilter.value : '';
+        const selectedSubject = subjectFilter ? subjectFilter.value : '';
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+
+        articles.forEach(article => {
+            let shouldShow = true;
+
+            // Grade filter
+            if (selectedGrade && !article.dataset.grade?.includes(selectedGrade)) {
+                shouldShow = false;
+            }
+
+            // Format filter
+            if (selectedFormat && !article.dataset.format?.includes(selectedFormat)) {
+                shouldShow = false;
+            }
+
+            // Subject filter
+            if (selectedSubject && !article.dataset.subject?.includes(selectedSubject)) {
+                shouldShow = false;
+            }
+
+            // Search filter
+            if (searchTerm) {
+                const title = article.querySelector('h3').textContent.toLowerCase();
+                const content = article.querySelector('p').textContent.toLowerCase();
+                if (!title.includes(searchTerm) && !content.includes(searchTerm)) {
+                    shouldShow = false;
+                }
+            }
+
+            article.style.display = shouldShow ? 'block' : 'none';
+        });
+
+        updateShowingCount();
+    }
+
+    // Add event listeners
+    if (gradeFilter) gradeFilter.addEventListener('change', filterArticles);
+    if (formatFilter) formatFilter.addEventListener('change', filterArticles);
+    if (subjectFilter) subjectFilter.addEventListener('change', filterArticles);
+    if (searchInput) searchInput.addEventListener('input', debounce(filterArticles, 300));
+
+    // Category filter clicks
+    categoryFilters.forEach(filter => {
+        filter.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active state
+            categoryFilters.forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter by category
+            const category = this.dataset.category;
+            const articles = document.querySelectorAll('.article-card');
+            
+            articles.forEach(article => {
+                if (category === 'all' || article.dataset.category === category) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+            
+            updateShowingCount();
+        });
+    });
+}
+
+// Resources filtering functionality
+function initializeResourcesFiltering() {
+    const gradeFilter = document.getElementById('grade-filter');
+    const typeFilter = document.getElementById('type-filter');
+    const subjectFilter = document.getElementById('subject-filter');
+    const searchInput = document.querySelector('.search-input');
+
+    function filterResources() {
+        const resources = document.querySelectorAll('.resource-card');
+        const selectedGrade = gradeFilter ? gradeFilter.value : '';
+        const selectedType = typeFilter ? typeFilter.value : '';
+        const selectedSubject = subjectFilter ? subjectFilter.value : '';
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+
+        resources.forEach(resource => {
+            let shouldShow = true;
+
+            // Grade filter
+            if (selectedGrade && !resource.dataset.grade?.includes(selectedGrade)) {
+                shouldShow = false;
+            }
+
+            // Type filter
+            if (selectedType && !resource.dataset.category?.includes(selectedType)) {
+                shouldShow = false;
+            }
+
+            // Subject filter
+            if (selectedSubject && !resource.dataset.subject?.includes(selectedSubject)) {
+                shouldShow = false;
+            }
+
+            // Search filter
+            if (searchTerm) {
+                const title = resource.querySelector('h3').textContent.toLowerCase();
+                const content = resource.querySelector('p').textContent.toLowerCase();
+                if (!title.includes(searchTerm) && !content.includes(searchTerm)) {
+                    shouldShow = false;
+                }
+            }
+
+            resource.style.display = shouldShow ? 'block' : 'none';
+        });
+
+        updateShowingCount();
+    }
+
+    // Add event listeners
+    if (gradeFilter) gradeFilter.addEventListener('change', filterResources);
+    if (typeFilter) typeFilter.addEventListener('change', filterResources);
+    if (subjectFilter) subjectFilter.addEventListener('change', filterResources);
+    if (searchInput) searchInput.addEventListener('input', debounce(filterResources, 300));
+
+    // Download button functionality
+    const downloadBtns = document.querySelectorAll('.download-btn');
+    downloadBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+                this.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.style.background = '';
+                    this.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+    });
+}
+
+// Update showing count
+function updateShowingCount() {
+    const showingCount = document.querySelector('.showing-count');
+    if (showingCount) {
+        const visibleItems = document.querySelectorAll('.article-card:not([style*="display: none"]), .resource-card:not([style*="display: none"])').length;
+        const totalItems = document.querySelectorAll('.article-card, .resource-card').length;
+        showingCount.textContent = `Showing ${visibleItems} of ${totalItems} items`;
+    }
+}
+
+// Debounce function for search input
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Add loading animation for better UX
+function showLoading(element) {
+    element.style.opacity = '0.7';
+    element.style.pointerEvents = 'none';
+}
+
+function hideLoading(element) {
+    element.style.opacity = '1';
+    element.style.pointerEvents = 'auto';
+} 
